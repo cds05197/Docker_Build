@@ -1,11 +1,9 @@
 from flask import Flask
-from flask_restx import Api, Resource
 
 app = Flask(__name__)
-api = Api(app)
 
-@api.route('/hello')
-class HelloWorld(Resource):
+@app.route('/hello')
+class HelloWorld():
 	def get(self):
 		return {"hello":"world!"}
 
