@@ -2,7 +2,7 @@ FROM python
 
 WORKDIR /app
 
-RUN pip install flask-restx 
+RUN pip install flask
 
 COPY ./app.py /app
 
