@@ -1,3 +1,12 @@
-FROM nginx:latest
-LABEL maintainer "Author <Author@localhost.com>"
-ADD index.html /usr/share/nginx/html
+FROM python
+
+WORKDIR /app
+
+RUN pip install flask-restx
+
+COPY ./app.py /app
+
+ENTRYPOINT [ "python3" ]
+
+CMD [ "app.py" ]
+
