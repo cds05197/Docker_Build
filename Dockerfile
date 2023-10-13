@@ -2,7 +2,7 @@ FROM python
 
 WORKDIR /app
 
-RUN pip install flask-restx && pip install flask-Scaffold
+RUN pip install flask-restx 
 
 COPY ./app.py /app
 
