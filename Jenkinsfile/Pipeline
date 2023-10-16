@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+    environment {
+        imageName = "flaskapp"
+        registryCredentials = "nexus-credential"
+        registry = "172.16.150.7:5001/"
+        dockerImage = ''
+    }
+    stages {
+        stage('Code checkout') {
+            steps {
+              checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-credential', url: 'https://github.com/cds05197/Docker_Build.git']])
+          }
+        }
+
+        // Building Docker images
+        stage('Building image') {
+          steps{
+            script {
+              dockerImage = docker.build imageName
+            }
+          }
+        }
+
+        // Uploading Docker images into Nexus Registry
+        stage('Uploading to Nexus') {
+        steps{
+            script {
+                docker.withRegistry( 'http://'+registry, registryCredentials ) {
+                dockerImage.push('latest')
+              }
+            }
+          }
+        }
+            
+        
+    stage('Docker Stop') {
+       steps{
+         script {
+                sh 'docker rm -f myflaskapp '
+            }
+         }
+      }
+
+    stage('Docker Run') {
+       steps{
+         script {
+                sh 'docker run -d -p 5000:5000 --rm --name myflaskapp ' + registry + imageName
+            }
+         }
+      }
+    }
+}
+
