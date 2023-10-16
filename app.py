@@ -8,7 +8,7 @@ def HelloWorld():
 
 @app.route('/test')
 def Hellotest():
-	return {"test":"success!"}
+	return {"testis":"success!"}
 
 @app.route('/world')
 def worldtest():
